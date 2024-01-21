@@ -1,3 +1,25 @@
+function loadJQuery() {
+    const jqueryUrl = 'https://code.jquery.com/jquery-3.6.4.min.js';
+    
+    return fetch(jqueryUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Failed to load jQuery: ${response.status} ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(jqueryCode => {
+            const script = document.createElement('script');
+            script.textContent = jqueryCode;
+            document.head.appendChild(script);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+loadJQuery();
+
 document.getElementById("submitName").addEventListener("click", submitName);
 document.getElementById("startGame").addEventListener("click", startGame);
 document.getElementById("fight").addEventListener("click", () => playerAction("fight"));
@@ -33,7 +55,6 @@ function nextEncounter() {
     currentMonster = monsters[Math.floor(Math.random() * monsters.length)];
     console.log(`\n--- Encounter: ${currentMonster.name} ---`);
 
-    
     document.getElementById("enemyImage").src = getMonsterImagePath(currentMonster.name);
 
     document.getElementById("actionButtons").style.display = "block";
